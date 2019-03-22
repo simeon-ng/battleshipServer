@@ -28,6 +28,8 @@
 #define DEFAULT_BUFFER_LEN 512      // Size of buffer
 #define DEFAULT_PORT "54000"        // Port for socket connections
 
+// Class : Server
+
 class Server {
 
 public:

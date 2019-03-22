@@ -7,10 +7,22 @@
 #include "game.h"
 #include "client.h"
 #include "server.h"
+#include <memory>
 
+// Temporary Global functions for server/client
+
+void serverLoop() {
+
+}
+
+void clientLoop() {
+
+}
+
+
+
+// main()
 int main() {
-    Client c;
-    Server s;
     Game g;
     g.fancyPrint("WELCOME TO BATTLESHIP");
     while(true) {

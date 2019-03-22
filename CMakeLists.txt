@@ -21,7 +21,7 @@ add_executable(Battleship
         ship.cpp ship.h
         board.cpp board.h
         player.cpp player.h
-        game.cpp game.h client.cpp client.h server.cpp server.h serverGame.cpp serverGame.h)
+        game.cpp game.h client.cpp client.h server.cpp server.h serverGame.cpp serverGame.h clientGame.cpp clientGame.h)
 
 if(WIN32)
     target_link_libraries(Battleship wsock32 ws2_32)

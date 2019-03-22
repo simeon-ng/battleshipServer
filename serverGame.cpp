@@ -1,6 +1,7 @@
 // serverGame.cpp
 // Simeon Ng
 // Updated 3/22/19
+// Source file for ServerGame class.
 
 #include "serverGame.h"
 

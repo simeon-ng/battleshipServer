@@ -28,6 +28,7 @@
 #define DEFAULT_PORT "54000"        // Port for socket connections
 
 // Class : Client
+// Handles connecting the client to the server.
 
 class Client {
 

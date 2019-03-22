@@ -66,3 +66,18 @@ Server::Server() {
         exit(1);
     }
 }
+
+// acceptClient()
+// Accepts clients that attempt to connect.
+bool Server::acceptClient(unsigned int & id) {
+    _clientSocket = accept(_listeningSocket, NULL, NULL);
+    if (_clientSocket != INVALID_SOCKET) {
+        // Disable nagle algorithm for client socket.
+        char value = 1;
+        setsockopt(_clientSocket, IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value));
+        // Add client socket to table.
+        _sessions.insert(std::pair<unsigned int, SOCKET>(id, _clientSocket));
+        return true;
+    }
+    return false;
+}

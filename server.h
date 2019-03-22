@@ -18,6 +18,7 @@
 #include <iphlpapi.h>
 #include <stdio.h>
 #include <cstdlib>
+#include <map>
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "Mswsock.lib")
@@ -32,11 +33,13 @@ class Server {
 public:
     Server();
     ~Server() = default;
+    bool acceptClient(unsigned int &);
 
 private:
-    int _result;                // For return values.
-    SOCKET _listeningSocket;    // Socket that listens to client connections (Server Socket).
-    SOCKET _clientSocket;       // Socket to give to clients.
+    int _result;                    // For return values.
+    SOCKET _listeningSocket;        // Socket that listens to client connections (Server Socket).
+    SOCKET _clientSocket;           // Socket to give to clients.
+    std::map<unsigned int, SOCKET> _sessions;    // Table of all clients sockets.
 };
 
 

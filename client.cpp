@@ -66,4 +66,21 @@ Client::Client() {
         WSACleanup();
         exit(1);
     }
+
+    // Setup the socket to be nonblocking.
+    // Means it will not wait on send and receive functions when
+    // there is no data to send/receive.
+    u_long mode = 1;
+    _result = ioctlsocket(_ConnectSocket, FIONBIO, &mode);
+    if (_result == SOCKET_ERROR) {
+        printf("ioctlsocket failed with error %d\n", WSAGetLastError());
+        closesocket(_ConnectSocket);
+        WSACleanup();
+        exit(1);
+    }
+
+    // Disable nagle.
+    // nagle is an algorithm that reduces the amount of packets set over the network.
+    char value = 1;
+    setsockopt(_ConnectSocket, IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value));
 }

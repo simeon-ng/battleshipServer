@@ -1,28 +1,36 @@
 // main.cpp
 // Simeon Ng
 // Jason Herning
-// Updated: 2/26/19
+// Updated: 3/22/19
 // Game Class Source File
 
 #include "game.h"
-#include "client.h"
-#include "server.h"
+#include "clientGame.h"
+#include "serverGame.h"
 #include <memory>
+#include <process.h>
 
 // Temporary Global functions for server/client
+void serverLoop(void*);
+void clientLoop();
 
-void serverLoop() {
-
-}
-
-void clientLoop() {
-
-}
-
-
+std::unique_ptr<ServerGame> server;
+std::unique_ptr<ClientGame> client;
 
 // main()
 int main() {
+    // Testing server/client
+
+    // Initialize server.
+    server = std::make_unique<ServerGame>();
+    // Create separate thread for server so it can keep checking for new clients.
+    _beginthread(serverLoop, 0, (void*) 12);
+    // Initialize client.
+    client = std::make_unique<ClientGame>();
+
+    clientLoop();
+
+    // Game Loop
     Game g;
     g.fancyPrint("WELCOME TO BATTLESHIP");
     while(true) {
@@ -40,5 +48,17 @@ int main() {
             case 'q' : cout << "Goodbye!" << endl; return 0;
             default  : cout << "Not a valid input. Try again" << endl; continue;
         }
+    }
+}
+
+void serverLoop(void*) {
+    while(true) {
+        server->update();
+    }
+}
+
+void clientLoop() {
+    while(true) {
+        // client->update()
     }
 }

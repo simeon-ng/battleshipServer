@@ -1,13 +1,11 @@
 // client.h
 // Simeon Ng
-// Updated 3/21/19
 // Header file for Battleship client class
 
 #ifndef BATTLESHIP_CLIENT_H
 #define BATTLESHIP_CLIENT_H
 
 #define _WIN32_WINNT 0x501          // used by ws2tcpip.h
-
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -18,6 +16,12 @@
 #include <iphlpapi.h>
 #include <stdio.h>
 #include <cstdlib>
+#include <iostream>
+#include "networkData.h"
+#include "network.h"
+
+using std::cout;
+using std::endl;
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "Mswsock.lib")
@@ -35,6 +39,9 @@ class Client {
 public:
     Client();
     ~Client() = default;
+    int receivePackets(char *);
+
+    SOCKET getConnectSocket();
 
 private:
     int _result;                // Will hold result of return values of:

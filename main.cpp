@@ -59,6 +59,6 @@ void serverLoop(void*) {
 
 void clientLoop() {
     while(true) {
-        // client->update()
+        client->update();
     }
 }

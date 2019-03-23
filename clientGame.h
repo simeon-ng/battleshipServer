@@ -1,6 +1,5 @@
 // clientGame.h
 // Simeon Ng
-// Updated 3/22/19
 // Header for ClientGame class.
 
 #ifndef BATTLESHIP_CLIENTGAME_H
@@ -9,6 +8,7 @@
 #include <winsock2.h>
 #include <windows.h>
 #include "client.h"
+#include "networkData.h"
 #include <memory>
 
 // Class : ClientGame
@@ -18,9 +18,12 @@ class ClientGame {
 public:
     ClientGame();
     ~ClientGame() = default;
+    void sendActionPackets();
+    void update();
 
 private:
     std::unique_ptr<Client> _network;    // Client object that handles connections.
+    char _networkData[MAX_PACKET_SIZE];
 
 };
 

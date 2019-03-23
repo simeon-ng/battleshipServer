@@ -13,7 +13,7 @@ add_executable(Battleship_tests
         ship.cpp ship.h
         board.cpp board.h
         player.cpp player.h
-        game.cpp game.h network.cpp network.h)
+        game.cpp game.h network.h)
 
 #with main
 add_executable(Battleship
@@ -21,7 +21,12 @@ add_executable(Battleship
         ship.cpp ship.h
         board.cpp board.h
         player.cpp player.h
-        game.cpp game.h client.cpp client.h server.cpp server.h serverGame.cpp serverGame.h clientGame.cpp clientGame.h)
+        game.cpp game.h
+        client.cpp client.h
+        server.cpp server.h
+        serverGame.cpp serverGame.h
+        clientGame.cpp clientGame.h
+        networkData.h)
 
 if(WIN32)
     target_link_libraries(Battleship wsock32 ws2_32)

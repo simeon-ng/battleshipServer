@@ -1,13 +1,11 @@
 // server.h
 // Simeon Ng
-// Updated 3/21/19
 // Header for Battleship server class
 
 #ifndef BATTLESHIP_SERVER_H
 #define BATTLESHIP_SERVER_H
 
 #define _WIN32_WINNT 0x501          // used by ws2tcpip.h
-
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -18,7 +16,12 @@
 #include <iphlpapi.h>
 #include <stdio.h>
 #include <cstdlib>
+#include <iostream>
 #include <map>
+#include "networkData.h"
+#include "network.h"
+using std::cout;
+using std::endl;
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "Mswsock.lib")
@@ -37,6 +40,10 @@ public:
     Server();
     ~Server() = default;
     bool acceptClient(unsigned int &);
+    int receiveData(unsigned int, char *);
+    void sendToAllClients(char *, int);
+
+    std::map<unsigned int, SOCKET> getSessions();
 
 private:
     int _result;                    // For return values.

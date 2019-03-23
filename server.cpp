@@ -1,10 +1,9 @@
 // server.cpp
 // Simeon Ng
-// Updated 3/21/19
 // Source file for Battleship server class.
 
-#include <iostream>
 #include "server.h"
+#include "network.h"
 
 Server::Server() {
 
@@ -14,7 +13,7 @@ Server::Server() {
     // Initialize Winsock
     _result = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (_result != 0) {
-        printf("WSAStartup failed: %d\n", _result);
+        cout << "WSAStartup failed: " << _result << endl;
         exit(1);
     }
 
@@ -31,7 +30,7 @@ Server::Server() {
     // Resolve the local address and port to be used by the server
     _result = getaddrinfo("127.0.0.1", DEFAULT_PORT, &hints, &result);
     if (_result != 0) {
-        printf("getaddrinfo failed: %d\n", _result);
+        cout << "getaddrinfo failed: " << _result << endl;
         WSACleanup();
         exit(1);
     }
@@ -41,14 +40,14 @@ Server::Server() {
 
     _listeningSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
     if (_listeningSocket == INVALID_SOCKET) {
-        printf("Error at socket(): %d\n", WSAGetLastError());
+        cout << "Error at socket(): " << WSAGetLastError() << endl;
         freeaddrinfo(result);
     }
 
     // Bind TCP Listening socket
     _result = bind(_listeningSocket, result->ai_addr, (int)result->ai_addrlen);
     if (_result == SOCKET_ERROR) {
-        printf("bind failed with error: %d\n", WSAGetLastError());
+        cout << "bind() failed with error: " << WSAGetLastError() << endl;
         freeaddrinfo(result);
         closesocket(_listeningSocket);
         WSACleanup();
@@ -60,7 +59,7 @@ Server::Server() {
 
     // Allow incoming connection requests by listening.
     if (listen(_listeningSocket, SOMAXCONN) == SOCKET_ERROR) {
-        printf("Listen failed with error: %d\n", WSAGetLastError());
+        cout << "Listen failed with error: " << WSAGetLastError() << endl;
         closesocket(_listeningSocket);
         WSACleanup();
         exit(1);
@@ -80,4 +79,40 @@ bool Server::acceptClient(unsigned int & id) {
         return true;
     }
     return false;
+}
+
+// receiveData()
+// Reads message on server side.
+int Server::receiveData(unsigned int clientID, char * recvBuffer) {
+    if (_sessions.find(clientID) != _sessions.end()) {
+        SOCKET currentSocket = _sessions[clientID];
+        _result = receiveMessage(currentSocket, recvBuffer, MAX_PACKET_SIZE);
+
+        if (_result == 0) {
+            cout << "Connection closed" << endl;
+            closesocket(currentSocket);
+        }
+        return _result;
+    }
+    return 0;
+}
+
+// sendToAllClients()
+// Sends action packets to all clients.
+void Server::sendToAllClients(char * packets, int totalSize) {
+    SOCKET currentSocket;
+    for(auto iter : _sessions) {
+        currentSocket = iter.second;
+        _result = sendMessage(currentSocket, packets, totalSize);
+        if (_result == SOCKET_ERROR) {
+            cout << "Send failed with error: " << WSAGetLastError() << endl;
+            closesocket(currentSocket);
+        }
+    }
+
+}
+
+
+std::map<unsigned int, SOCKET> Server::getSessions() {
+    return _sessions;
 }

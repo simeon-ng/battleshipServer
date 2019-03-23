@@ -1,9 +1,7 @@
 // client.cpp
 // Simeon Ng
-// Updated 3/21/19
 // Source file for Battleship client class
 
-#include <iostream>
 #include "client.h"
 
 // Client ctor
@@ -18,7 +16,7 @@ Client::Client() {
     // Initialize Winsock
     _result = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (_result != 0) {
-        printf("WSAStartup failed: %d\n", _result);
+        cout << "WSAStartup failed: " << _result << endl;
         exit(1);
     }
 
@@ -36,7 +34,7 @@ Client::Client() {
     // Resolve the server address and port
     _result = getaddrinfo("127.0.0.1", DEFAULT_PORT, &hints, &result);
     if (_result != 0) {
-        printf("getaddrinfo failed: %d\n", _result);
+        cout << "getaddrinfo failed: " << _result << endl;
         WSACleanup();
         exit(1);
     }
@@ -45,7 +43,7 @@ Client::Client() {
     ptr = result;
     _ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
     if (_ConnectSocket == INVALID_SOCKET) {
-        printf("Error at socket(): %d\n", WSAGetLastError());
+        cout << "Error at socket(): " << WSAGetLastError() << endl;
         freeaddrinfo(result);
         WSACleanup();
         exit(1);
@@ -62,7 +60,7 @@ Client::Client() {
     freeaddrinfo(result);
 
     if (_ConnectSocket == INVALID_SOCKET) {
-        printf("Unable to connect to server!\n");
+        cout << "Unable to connect to server!" << endl;
         WSACleanup();
         exit(1);
     }
@@ -73,7 +71,7 @@ Client::Client() {
     u_long mode = 1;
     _result = ioctlsocket(_ConnectSocket, FIONBIO, &mode);
     if (_result == SOCKET_ERROR) {
-        printf("ioctlsocket failed with error %d\n", WSAGetLastError());
+        cout << "ioctlsocket failed with error " << WSAGetLastError() << endl;
         closesocket(_ConnectSocket);
         WSACleanup();
         exit(1);
@@ -83,4 +81,21 @@ Client::Client() {
     // nagle is an algorithm that reduces the amount of packets set over the network.
     char value = 1;
     setsockopt(_ConnectSocket, IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value));
+}
+
+// receivePackets()
+// Receives packets from the server.
+int Client::receivePackets(char * recvBuffer) {
+    _result = receiveMessage(_ConnectSocket, recvBuffer, MAX_PACKET_SIZE);
+    if (_result == 0) {
+        cout << "Connection closed." << endl;
+        closesocket(_ConnectSocket);
+        WSACleanup();
+        exit(1);
+    }
+    return _result;
+}
+
+SOCKET Client::getConnectSocket() {
+    return _ConnectSocket;
 }

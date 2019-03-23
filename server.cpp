@@ -91,6 +91,7 @@ int Server::receiveData(unsigned int clientID, char * recvBuffer) {
         if (_result == 0) {
             cout << "Connection closed" << endl;
             closesocket(currentSocket);
+            //TODO: Remove clients from sessions, shutdown socket.
         }
         return _result;
     }

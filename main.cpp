@@ -21,14 +21,16 @@ std::unique_ptr<ClientGame> client;
 int main() {
     // Testing server/client
 
-    // Initialize server.
-    server = std::make_unique<ServerGame>();
-    // Create separate thread for server so it can keep checking for new clients.
-    _beginthread(serverLoop, 0, (void*) 12);
-    // Initialize client.
-    client = std::make_unique<ClientGame>();
+    while(true) {
+        // Initialize server.
+        server = std::make_unique<ServerGame>();
+        // Create separate thread for server so it can keep checking for new clients.
+        _beginthread(serverLoop, 0, (void *) 12);
+        // Initialize client.
+        client = std::make_unique<ClientGame>();
 
-    clientLoop();
+        clientLoop();
+    }
 
     // Game Loop
     Game g;

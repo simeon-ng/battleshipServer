@@ -65,3 +65,10 @@ void ServerGame::sendActionPackets() {
     packet.serialize(packetData);
     _network->sendToAllClients(packetData, packetSize);
 }
+
+// sendPrompt()
+// Sends a simple prompt to the clients.
+void ServerGame::sendPrompt() {
+    const unsigned int packetSize = sizeof(Packet);
+    // TODO
+}

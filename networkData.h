@@ -10,7 +10,7 @@
 #define MAX_PACKET_SIZE 1000000
 
 enum PacketTypes {
-    INIT_CONNECTION = 0, ACTION_EVENT = 1
+    INIT_CONNECTION = 0, ACTION_EVENT = 1, PROMPT_EVENT = 2
 };
 
 struct Packet {
@@ -28,6 +28,10 @@ struct Packet {
      void deserialize(char * data) {
          memcpy(this, data, sizeof(Packet));
      }
+
+     // serializePrompt()
+     void serializePrompt();
+     // TODO
 };
 
 #endif //BATTLESHIP_NETWORKDATA_H

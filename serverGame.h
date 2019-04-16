@@ -18,7 +18,9 @@ public:
     ~ServerGame() = default;
     void update();
     void receiveFromClient();
+
     void sendActionPackets();
+    void sendPrompt();
 
 private:
     static unsigned int _clientID;      // ID's for client when they connect.

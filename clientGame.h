@@ -23,7 +23,7 @@ public:
 
 private:
     std::unique_ptr<Client> _network;    // Client object that handles connections.
-    char _networkData[MAX_PACKET_SIZE];
+    char _networkData[MAX_PACKET_SIZE];  // Buffer
 
 };
 

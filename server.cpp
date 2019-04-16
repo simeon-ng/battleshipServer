@@ -90,7 +90,18 @@ int Server::receiveData(unsigned int clientID, char * recvBuffer) {
 
         if (_result == 0) {
             cout << "Connection closed" << endl;
+            _sessions.clear();
+            _result = shutdown(currentSocket, SD_SEND);
+
+            if(_result == SOCKET_ERROR) {
+                cout << "Shutdown failed: " << WSAGetLastError() << endl;
+                closesocket(currentSocket);
+                WSACleanup();
+                return 1;
+            }
             closesocket(currentSocket);
+            WSACleanup();
+            return _result;
             //TODO: Remove clients from sessions, shutdown socket.
         }
         return _result;

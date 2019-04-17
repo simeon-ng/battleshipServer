@@ -9,16 +9,17 @@
 #include <memory>
 #include <process.h>
 #include <thread>
+using std::thread;
+
 
 // Temporary Global functions for server/client
-void serverLoop(void*);
+void serverLoop();
 void clientLoop();
 
 std::unique_ptr<ServerGame> server;
 std::unique_ptr<ClientGame> client;
 
-void serverLoop(void*) {
-    server = std::make_unique<ServerGame>();
+void serverLoop() {
     while(true) {
         server->update();
     }
@@ -43,10 +44,7 @@ void clientLoop() {
             case 'q' : cout << "Goodbye!" << endl; return;
             case 'C' :
                 // Initialize client.
-                client = std::make_unique<ClientGame>();
-                while(true) {
-                    client->update();
-                }
+                client->update();
             default  : cout << "Not a valid input. Try again" << endl; continue;
         }
     }
@@ -59,7 +57,8 @@ int main() {
 
     // Initialize server.
     // Create separate thread for server so it can keep checking for new clients.
-    _beginthread(serverLoop, 0, (void*)12);
-
-    clientLoop();
+    thread serverThread(serverLoop);
+    thread clientThread(clientLoop);
+    serverThread.join();
+    clientThread.join();
 }

@@ -8,8 +8,6 @@
 #include "serverGame.h"
 #include <memory>
 #include <process.h>
-#include <thread>
-using std::thread;
 
 
 // Temporary Global functions for server/client
@@ -57,8 +55,8 @@ int main() {
 
     // Initialize server.
     // Create separate thread for server so it can keep checking for new clients.
-    thread serverThread(serverLoop);
-    thread clientThread(clientLoop);
-    serverThread.join();
-    clientThread.join();
+//    thread serverThread(serverLoop);
+//    thread clientThread(clientLoop);
+//    serverThread.join();
+//    clientThread.join();
 }

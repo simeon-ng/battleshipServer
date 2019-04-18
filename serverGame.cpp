@@ -35,7 +35,6 @@ void ServerGame::receiveFromClient() {
         while (index < (unsigned int)dataLen) {
             packet.deserialize(&(_networkData[index]));
             index += sizeof(Packet);
-
             switch(packet._packetType) {
                 case INIT_CONNECTION:
                     cout << "Server received INIT packet from client." << endl;

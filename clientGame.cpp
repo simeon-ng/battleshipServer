@@ -50,7 +50,7 @@ void ClientGame::update() {
         switch(packet._packetType) {
             case ACTION_EVENT:
                 cout << "Client received Action event packet from server." << endl;
-                sendActionPackets();
+                this->sendActionPackets();
                 break;
             default:
                 cout << "Error in packet types." << endl;

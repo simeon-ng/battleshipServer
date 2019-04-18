@@ -26,8 +26,36 @@ add_executable(Battleship
         server.cpp server.h
         serverGame.cpp serverGame.h
         clientGame.cpp clientGame.h
+        networkData.h network.h)
+
+# Server
+add_executable(Battleship_Server
+        serverMain.cpp
+        ship.cpp ship.h
+        board.cpp board.h
+        player.cpp player.h
+        game.cpp game.h
+        client.cpp client.h
+        server.cpp server.h
+        serverGame.cpp serverGame.h
+        clientGame.cpp clientGame.h
+        networkData.h network.h)
+
+# Client
+add_executable(Battleship_Client
+        clientMain.cpp
+        ship.cpp ship.h
+        board.cpp board.h
+        player.cpp player.h
+        game.cpp game.h
+        client.cpp client.h
+        server.cpp server.h
+        serverGame.cpp serverGame.h
+        clientGame.cpp clientGame.h
         networkData.h)
 
 if(WIN32)
     target_link_libraries(Battleship wsock32 ws2_32)
+    target_link_libraries(Battleship_Server wsock32 ws2_32)
+    target_link_libraries(Battleship_Client wsock32 ws2_32)
 endif()
